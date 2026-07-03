@@ -90,7 +90,18 @@ def fetch_jobs() -> dict:
 
     # Fuente 1: listado general, filtrado por título que contenga alguna keyword
     try:
-        general_jobs = _parse_jobs(_get_html(GENERAL_URL))
+        html = _get_html(GENERAL_URL)
+        print(f"[debug] listado general: {len(html)} caracteres descargados")
+        general_jobs = _parse_jobs(html)
+        print(f"[debug] listado general: {len(general_jobs)} links tipo convFicha encontrados")
+        if len(general_jobs) == 0:
+            # Diagnóstico: mostrar una muestra de los <a href> reales que sí encontró,
+            # para saber qué patrón usa el sitio en verdad.
+            soup = BeautifulSoup(html, "html.parser")
+            hrefs = [a["href"] for a in soup.find_all("a", href=True)][:15]
+            print(f"[debug] primeros hrefs encontrados en la página: {hrefs}")
+            print(f"[debug] contiene 'Cargando'?: {'Cargando' in html}")
+            print(f"[debug] contiene 'abogado' (texto plano)?: {'abogado' in html.lower()}")
         for job_id, data in general_jobs.items():
             title_lower = data["title"].lower()
             if any(kw in title_lower for kw in KEYWORDS):
@@ -101,6 +112,7 @@ def fetch_jobs() -> dict:
     # Fuente 2: área Jurídica-Legal-Fiscalía completa (respaldo, sin filtrar por título)
     try:
         area_jobs = _parse_jobs(_get_html(AREA_URL))
+        print(f"[debug] listado área legal: {len(area_jobs)} links encontrados")
         all_jobs.update(area_jobs)
     except requests.RequestException as e:
         print(f"Aviso: no se pudo leer el listado del área legal ({e})")
