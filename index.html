@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ofertas de Abogado — Empleos Públicos</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --border: #262b36;
+    --text: #e8e9ec;
+    --muted: #9aa1ad;
+    --accent: #4f8cff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px 16px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  .status {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .job {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .job a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .job a:hover { color: var(--accent); }
+  .job .id {
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 6px;
+  }
+  .empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 40px 0;
+  }
+  input[type="search"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+  }
+  input[type="search"]::placeholder { color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⚖️ Ofertas de Abogado</h1>
+    <div class="subtitle">Empleos Públicos — actualizado automáticamente cada 30 minutos</div>
+    <input type="search" id="filtro" placeholder="Filtrar por título..." />
+    <div class="status" id="status">Cargando...</div>
+    <div id="lista"></div>
+  </div>
+
+<script>
+  // Lee el mismo archivo que actualiza el scraper (seen_jobs.json)
+  const DATA_URL = "./seen_jobs.json";
+
+  let todas = [];
+
+  function render(items) {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    if (items.length === 0) {
+      lista.innerHTML = '<div class="empty">No hay ofertas para mostrar.</div>';
+      return;
+    }
+
+    items.forEach(([id, data]) => {
+      const div = document.createElement("div");
+      div.className = "job";
+      div.innerHTML = `
+        <a href="${data.link}" target="_blank" rel="noopener">${data.title}</a>
+        <div class="id">ID ${id}</div>
+      `;
+      lista.appendChild(div);
+    });
+  }
+
+  fetch(DATA_URL, { cache: "no-store" })
+    .then((r) => r.json())
+    .then((data) => {
+      todas = Object.entries(data).reverse(); // más recientes primero
+      document.getElementById("status").textContent =
+        `${todas.length} oferta(s) registrada(s)`;
+      render(todas);
+    })
+    .catch(() => {
+      document.getElementById("status").textContent =
+        "No se pudo cargar seen_jobs.json todavía (puede que el Action no haya corrido aún).";
+    });
+
+  document.getElementById("filtro").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    const filtradas = todas.filter(([id, data]) =>
+      data.title.toLowerCase().includes(q)
+    );
+    render(filtradas);
+  });
+</script>
+</body>
+</html>
