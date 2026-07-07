@@ -1,715 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control de Recursos · TRICEL</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ofertas de Abogado — Empleos Públicos</title>
 <style>
-:root{
-  --ink:#152238;
-  --ink-soft:#2c3a54;
-  --paper:#E7EAEF;
-  --paper-card:#FDFDFC;
-  --folder:#DCD9CC;
-  --folder-dark:#C9C4AE;
-  --brass:#9C7A3F;
-  --brass-dark:#7C5F2E;
-  --line:#C7CBD4;
-  --line-soft:#DADDE3;
-  --green:#3F6C51;
-  --green-bg:#E4EEE6;
-  --red:#9B3B2C;
-  --red-bg:#F3E4E0;
-  --amber:#8A6A1E;
-  --amber-bg:#F1E9D2;
-  --muted:#6A7180;
-  --shadow: 0 1px 2px rgba(21,34,56,.06), 0 6px 18px rgba(21,34,56,.07);
-  --radius: 3px;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  background:
-    radial-gradient(1200px 500px at 90% -10%, #eef0f4 0%, transparent 60%),
-    var(--paper);
-  color:var(--ink);
-  font-family:'IBM Plex Sans', system-ui, sans-serif;
-  min-height:100vh;
-}
-.wrap{max-width:1280px;margin:0 auto;padding:28px 24px 80px;}
-
-/* ---------- Header ---------- */
-.header{
-  display:flex;align-items:center;gap:18px;
-  padding:22px 26px;
-  background:var(--ink);
-  color:#EDEFF3;
-  border-radius:6px;
-  box-shadow:var(--shadow);
-  position:relative;
-  overflow:hidden;
-}
-.header::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(115deg, transparent 40%, rgba(156,122,63,.18) 55%, transparent 70%);
-  pointer-events:none;
-}
-.seal{
-  width:52px;height:52px;border-radius:50%;
-  border:2px solid var(--brass);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Source Serif 4', serif;font-weight:700;font-size:18px;
-  color:var(--brass);flex:none;position:relative;
-}
-.seal::before{content:"";position:absolute;inset:4px;border:1px solid rgba(156,122,63,.5);border-radius:50%;}
-.header h1{
-  font-family:'Source Serif 4', serif;font-weight:700;
-  font-size:26px;margin:0;letter-spacing:.2px;
-}
-.header p{margin:2px 0 0;color:#AEB6C6;font-size:13.5px;}
-.header .exp-count{
-  margin-left:auto;text-align:right;font-family:'IBM Plex Mono',monospace;
-  color:#AEB6C6;font-size:12px;line-height:1.5;
-}
-.header .exp-count b{color:#EDEFF3;font-size:20px;display:block;font-family:'Source Serif 4',serif;}
-
-/* ---------- Stat cards ---------- */
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px;}
-.stat{
-  background:var(--paper-card);border:1px solid var(--line-soft);border-radius:var(--radius);
-  padding:14px 16px;box-shadow:var(--shadow);
-  position:relative;
-}
-.stat .n{font-family:'Source Serif 4',serif;font-size:28px;font-weight:700;color:var(--ink);}
-.stat .l{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:2px;}
-.stat.accent-brass{border-left:3px solid var(--brass);}
-.stat.accent-green{border-left:3px solid var(--green);}
-.stat.accent-amber{border-left:3px solid var(--amber);}
-.stat.accent-ink{border-left:3px solid var(--ink);}
-.stat.accent-red{border-left:3px solid var(--red);}
-
-/* ---------- Toolbar ---------- */
-.toolbar{
-  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-  margin-top:22px;padding:12px 14px;background:var(--paper-card);
-  border:1px solid var(--line-soft);border-radius:var(--radius);box-shadow:var(--shadow);
-}
-.toolbar input[type=text], .toolbar select{
-  font-family:'IBM Plex Sans';font-size:13.5px;
-  padding:8px 10px;border:1px solid var(--line);border-radius:2px;background:#fff;color:var(--ink);
-}
-.toolbar input[type=text]{min-width:220px;flex:1;}
-.spacer{flex:1;}
-.btn{
-  font-family:'IBM Plex Sans';font-weight:600;font-size:13px;
-  padding:9px 14px;border-radius:2px;border:1px solid var(--ink);
-  background:var(--ink);color:#fff;cursor:pointer;letter-spacing:.01em;
-  transition:transform .08s ease, background .15s ease;
-}
-.btn:hover{background:var(--ink-soft);}
-.btn:active{transform:scale(.97);}
-.btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--line);}
-.btn.secondary:hover{background:#F2F3F5;}
-.btn.brass{background:var(--brass);border-color:var(--brass-dark);}
-.btn.brass:hover{background:var(--brass-dark);}
-.view-toggle{display:flex;border:1px solid var(--line);border-radius:2px;overflow:hidden;}
-.view-toggle button{
-  border:none;background:#fff;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);
-  font-family:'IBM Plex Sans';
-}
-.view-toggle button.active{background:var(--ink);color:#fff;}
-
-/* ---------- Kanban ---------- */
-.board{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
-.col{background:rgba(255,255,255,.4);border-radius:6px;min-height:200px;}
-.col-head{
-  clip-path: polygon(0 0, 92% 0, 100% 100%, 0% 100%);
-  background:var(--folder-dark);
-  padding:10px 26px 10px 16px;
-  font-family:'Source Serif 4', serif;font-weight:700;font-size:14.5px;color:var(--ink);
-  display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:-1px;
-}
-.col-head span.count{font-family:'IBM Plex Mono';font-weight:500;font-size:12px;color:var(--ink-soft);}
-.col[data-estado="Asignado"] .col-head{background:#DCD3C4;}
-.col[data-estado="En Proceso"] .col-head{background:#D8C9A3;}
-.col[data-estado="Terminado"] .col-head{background:#C3D2C7;}
-.col-body{
-  background:var(--folder);border:1px solid var(--folder-dark);border-top:none;
-  border-radius:0 0 6px 6px;padding:10px;min-height:160px;
-  display:flex;flex-direction:column;gap:9px;
-}
-.col-body.dragover{background:#EFE9D6;}
-.card{
-  background:var(--paper-card);border:1px solid var(--line-soft);border-radius:3px;
-  padding:11px 12px;box-shadow:var(--shadow);cursor:grab;position:relative;
-}
-.card:active{cursor:grabbing;}
-.card .causa{
-  font-family:'IBM Plex Mono';font-weight:600;font-size:12px;color:var(--brass-dark);
-  letter-spacing:.02em;
-}
-.card .cand{font-size:13.5px;font-weight:600;margin:3px 0 2px;line-height:1.25;}
-.card .meta{font-size:11.5px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-top:5px;}
-.card .meta span{display:inline-flex;align-items:center;gap:4px;}
-.card .file-chip{
-  margin-top:7px;font-size:11px;color:var(--ink-soft);
-  display:inline-flex;align-items:center;gap:4px;border:1px dashed var(--line);
-  padding:3px 7px;border-radius:2px;
-}
-.card .stamp{
-  position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:700;letter-spacing:.03em;
-  text-transform:uppercase;padding:2px 6px;border-radius:2px;
-  transform:rotate(-3deg);
-}
-.stamp.Acoge{background:var(--green-bg);color:var(--green);border:1px solid var(--green);}
-.stamp.Rechaza{background:var(--red-bg);color:var(--red);border:1px solid var(--red);}
-.stamp.AcogeParcial{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber);}
-.stamp.Pendiente{background:#EEF0F3;color:var(--muted);border:1px solid var(--line);}
-.empty-col{padding:22px 8px;text-align:center;color:var(--muted);font-size:12.5px;font-style:italic;}
-
-/* ---------- Table ---------- */
-.table-wrap{margin-top:18px;background:var(--paper-card);border:1px solid var(--line-soft);border-radius:var(--radius);box-shadow:var(--shadow);overflow-x:auto;}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:1000px;}
-thead th{
-  text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
-  padding:10px 12px;border-bottom:2px solid var(--ink);white-space:nowrap;cursor:pointer;
-}
-tbody td{padding:9px 12px;border-bottom:1px solid var(--line-soft);vertical-align:middle;}
-tbody tr:hover{background:#F5F6F8;}
-.badge{
-  font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.03em;
-  white-space:nowrap;
-}
-.badge.Asignado{background:#EEE9DC;color:#7C6A3E;}
-.badge.EnProceso{background:var(--amber-bg);color:var(--amber);}
-.badge.Terminado{background:var(--green-bg);color:var(--green);}
-.rowbtn{border:none;background:none;cursor:pointer;color:var(--brass-dark);font-size:12px;font-weight:600;padding:2px 4px;}
-.rowbtn.del{color:var(--red);}
-.mono{font-family:'IBM Plex Mono';font-size:12px;}
-.no-results{padding:40px;text-align:center;color:var(--muted);font-style:italic;}
-
-/* ---------- Modal ---------- */
-.overlay{
-  position:fixed;inset:0;background:rgba(15,22,36,.55);display:none;
-  align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:50;
-}
-.overlay.show{display:flex;}
-.modal{
-  background:#fff;width:100%;max-width:640px;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.35);
-  overflow:hidden;
-}
-.modal-head{
-  background:var(--ink);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;
-}
-.modal-head h2{font-family:'Source Serif 4',serif;font-size:19px;margin:0;font-weight:700;}
-.modal-head button{background:none;border:none;color:#AEB6C6;font-size:20px;cursor:pointer;}
-.modal-body{padding:20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;max-height:70vh;overflow:auto;}
-.field{display:flex;flex-direction:column;gap:4px;}
-.field.full{grid-column:1/-1;}
-.field label{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;}
-.field input[type=text], .field input[type=date], .field select, .field textarea{
-  font-family:'IBM Plex Sans';font-size:13.5px;padding:8px 10px;border:1px solid var(--line);border-radius:2px;
-}
-.field textarea{resize:vertical;min-height:54px;}
-.checks{display:flex;gap:16px;flex-wrap:wrap;}
-.check{display:flex;align-items:center;gap:6px;font-size:13px;}
-.modal-foot{padding:14px 22px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.file-row{display:flex;align-items:center;gap:10px;}
-.file-row .cur{font-size:12px;color:var(--muted);}
-
-@media (max-width:900px){
-  .stats{grid-template-columns:repeat(2,1fr);}
-  .board{grid-template-columns:1fr;}
-  .modal-body{grid-template-columns:1fr;}
-}
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --border: #262b36;
+    --text: #e8e9ec;
+    --muted: #9aa1ad;
+    --accent: #4f8cff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px 16px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  .status {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .job {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .job a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .job a:hover { color: var(--accent); }
+  .job .id {
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 6px;
+  }
+  .empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 40px 0;
+  }
+  input[type="search"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+  }
+  input[type="search"]::placeholder { color: var(--muted); }
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <div class="header">
-    <div class="seal">TC</div>
-    <div>
-      <h1>Control de Recursos TRICEL</h1>
-      <p>Seguimiento de auditoría e informes de cuentas · candidatos electorales</p>
-    </div>
-    <div class="exp-count"><b id="statTotal">0</b>expedientes registrados</div>
+  <div class="wrap">
+    <h1>⚖️ Ofertas de Abogado</h1>
+    <div class="subtitle">Empleos Públicos — actualizado automáticamente cada 30 minutos</div>
+    <input type="search" id="filtro" placeholder="Filtrar por título..." />
+    <div class="status" id="status">Cargando...</div>
+    <div id="lista"></div>
   </div>
-
-  <div class="stats">
-    <div class="stat accent-ink"><div class="n" id="stAsignado">0</div><div class="l">Asignados</div></div>
-    <div class="stat accent-amber"><div class="n" id="stProceso">0</div><div class="l">En proceso</div></div>
-    <div class="stat accent-green"><div class="n" id="stTerminado">0</div><div class="l">Terminados</div></div>
-    <div class="stat accent-brass"><div class="n" id="stEnviados">0</div><div class="l">Enviados a jefatura</div></div>
-    <div class="stat accent-red"><div class="n" id="stArchivos">0</div><div class="l">Con archivo cargado</div></div>
-  </div>
-
-  <div class="toolbar">
-    <input type="text" id="fSearch" placeholder="Buscar candidato, RUT, causa u observación…">
-    <select id="fAuditor"><option value="">Todos los auditores</option></select>
-    <select id="fEstado">
-      <option value="">Todos los estados</option>
-      <option value="Asignado">Asignado</option>
-      <option value="En Proceso">En proceso</option>
-      <option value="Terminado">Terminado</option>
-    </select>
-    <select id="fEleccion"><option value="">Toda elección</option></select>
-    <div class="spacer"></div>
-    <div class="view-toggle">
-      <button id="btnKanban" class="active">Tablero</button>
-      <button id="btnTabla">Tabla</button>
-    </div>
-    <button class="btn secondary" id="btnExport">Exportar CSV</button>
-    <button class="btn brass" id="btnNew">+ Nuevo expediente</button>
-  </div>
-
-  <div id="kanbanView">
-    <div class="board" id="board"></div>
-  </div>
-
-  <div id="tablaView" style="display:none;">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th data-k="causa">Causa</th>
-            <th data-k="candidato">Candidato</th>
-            <th data-k="eleccion">Elección</th>
-            <th data-k="auditor">Auditor</th>
-            <th data-k="fechaAsignacion">Asignación</th>
-            <th data-k="estado">Estado</th>
-            <th data-k="resultado">Resultado</th>
-            <th>Archivo</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-      <div class="no-results" id="noResults" style="display:none;">No hay expedientes que coincidan con el filtro.</div>
-    </div>
-  </div>
-
-</div>
-
-<!-- Modal -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="modalTitle">Nuevo expediente</h2>
-      <button id="modalClose">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="field"><label>N° Causa (Rol Tricel)</label><input type="text" id="fldCausa" placeholder="ej. 1234-2025"></div>
-      <div class="field"><label>Auditor asignado</label><input type="text" id="fldAuditor" list="auditorList" placeholder="Nombre auditor"></div>
-      <datalist id="auditorList"></datalist>
-      <div class="field"><label>Fecha de asignación</label><input type="date" id="fldFecha"></div>
-      <div class="field"><label>Estado</label>
-        <select id="fldEstado">
-          <option value="Asignado">Asignado</option>
-          <option value="En Proceso">En proceso</option>
-          <option value="Terminado">Terminado</option>
-        </select>
-      </div>
-      <div class="field"><label>RUT candidato</label><input type="text" id="fldRut" placeholder="12345678-9"></div>
-      <div class="field"><label>Candidato</label><input type="text" id="fldCandidato"></div>
-      <div class="field"><label>Elección</label>
-        <select id="fldEleccion">
-          <option value="">—</option>
-          <option>ALCALDE</option>
-          <option>CONCEJAL</option>
-          <option>CONSEJERO REGIONAL</option>
-          <option>GOBERNADOR REGIONAL</option>
-        </select>
-      </div>
-      <div class="field"><label>Resultado</label>
-        <select id="fldResultado">
-          <option>Pendiente</option>
-          <option>Acoge</option>
-          <option>Acoge Parcial</option>
-          <option>Rechaza</option>
-        </select>
-      </div>
-      <div class="field full">
-        <label>Detalle</label>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="fldModInforme"> Modifica informe</label>
-          <label class="check"><input type="checkbox" id="fldModReembolso"> Modifica reembolso</label>
-          <label class="check"><input type="checkbox" id="fldEnviado"> Enviado a jefatura</label>
-        </div>
-      </div>
-      <div class="field"><label>Fecha enviado a jefatura</label><input type="date" id="fldFechaEnviado"></div>
-      <div class="field full"><label>Observación</label><textarea id="fldObs"></textarea></div>
-      <div class="field full">
-        <label>Archivo del informe (para revisión)</label>
-        <div class="file-row">
-          <input type="file" id="fldArchivo">
-          <span class="cur" id="curArchivo"></span>
-          <button class="btn secondary" id="btnQuitarArchivo" type="button" style="display:none;">Quitar</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn secondary" id="btnDelete" style="display:none;">Eliminar expediente</button>
-      <div style="margin-left:auto;display:flex;gap:8px;">
-        <button class="btn secondary" id="btnCancel">Cancelar</button>
-        <button class="btn brass" id="btnSave">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
-/* ===================== Datos semilla (extraídos del control original) ===================== */
-const SEED = [{"id": 1, "auditor": "Rene", "fechaAsignacion": "2026-05-03", "causa": "996-2025", "rut": "6697352-2", "candidato": "PEDRO RAMON PARRAGUEZ GOMEZ", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-04-28", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 2, "auditor": "Mauricio", "fechaAsignacion": "2026-05-03", "causa": "973-2025", "rut": "6778475-8", "candidato": "OSCIEL VELASQUEZ HERNANDEZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-04", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 3, "auditor": "Javier", "fechaAsignacion": "2026-05-03", "causa": "991-2025", "rut": "6591781-5", "candidato": "JUAN CARLOS HINOJOSA ESPEJO", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-04", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 4, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-05-03", "causa": "425-2025", "rut": "8813142-8", "candidato": "CARLOS ISAAC PINEDA CORTES", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 5, "auditor": "sebastian", "fechaAsignacion": "2026-05-03", "causa": "456-2025", "rut": "9925282-0", "candidato": "LUIS ALBERTO GODOY BIZAMA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-18", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 6, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-03", "causa": "914-2025", "rut": "11245639-2", "candidato": "HERNAN PATRICIO CALBUÑIR MILCHIO", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-04-29", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 7, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-03", "causa": "1301-2025", "rut": "10172281-3", "candidato": "RENE GARCES ALVAREZ", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-04-29", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 8, "auditor": "Alejandro", "fechaAsignacion": "2026-05-03", "causa": "972-2025", "rut": "16477301-9", "candidato": "SEBASTIAN FUENTES GALLARDO", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-04", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 9, "auditor": "Mauricio", "fechaAsignacion": "2026-05-03", "causa": "947-2025", "rut": "10909917-1", "candidato": "OLIVIA ELENA TORRES GOMEZ", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-18", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 10, "auditor": "Daniel", "fechaAsignacion": "2026-05-03", "causa": "953-2025", "rut": "10960487-9", "candidato": "ELVIRA ELIZABETH SOTO ORELLANA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-04", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 11, "auditor": "Cristian", "fechaAsignacion": "2026-05-03", "causa": "1232-2025", "rut": "4102661-8", "candidato": "JOSE PABLO DONOSO URZUA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-04", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 12, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-03", "causa": "1203-2025", "rut": "15260476-9", "candidato": "REMIGIO SANTIAGO HUENOLAF HUIRCALAF", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-12", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 13, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-03", "causa": "1234-2025", "rut": "5069199-3", "candidato": "MANUEL LUIS HUMBERTO DIAZ VASQUEZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-12", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 14, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-03", "causa": "930-2025", "rut": "16645089-6", "candidato": "ENRIQUE ALFONSO DEL BARRIO HERNANDEZ", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-11", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 15, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-15", "causa": "1002-2025", "rut": "6740137-9", "candidato": "JULIO ANTONIO CHERIF PEREZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 16, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-15", "causa": "1173-2025", "rut": "15510976-9", "candidato": "YERSON ANDRES SOTO VENEGAS", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 17, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-05-15", "causa": "1191-2025", "rut": "9110343-5", "candidato": "WILMA JIMENEZ MUTIS", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 18, "auditor": "vero/ ursula", "fechaAsignacion": "2026-05-15", "causa": "1197-2025", "rut": "9197574-2", "candidato": "CARLOS PATRICIO CAMPUSANO CERDA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 19, "auditor": "Katherine", "fechaAsignacion": "2026-05-15", "causa": "1233-2025", "rut": "4665425-0", "candidato": "CARLOS ESCOBAR PAREDES", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 20, "auditor": "daniela/yesi", "fechaAsignacion": "2026-05-15", "causa": "1547-2025", "rut": "17029781-4", "candidato": "CONSTANZA GABRIELA SCHONHAUT SOTO", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 21, "auditor": "vero", "fechaAsignacion": "2026-05-15", "causa": "570-2025", "rut": "16522749-2", "candidato": "GUIDO CARREÑO REYES", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-20", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 22, "auditor": "alejandro /carolina", "fechaAsignacion": "2026-05-15", "causa": "799-2025", "rut": "14054125-7", "candidato": "VIVIANA DEL PILAR RAMIREZ MELENDEZ", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-20", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 23, "auditor": "Mauricio/gloria", "fechaAsignacion": "2026-05-15", "causa": "979-2025", "rut": "16367003-8", "candidato": "FELIPE ROSS CORREA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-20", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 24, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-05-15", "causa": "1036-2025", "rut": "15876604-3", "candidato": "LUIS MIGUEL CEBALLOS MERIÑO", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-20", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 25, "auditor": "vero", "fechaAsignacion": "2026-05-15", "causa": "1050-2025", "rut": "15921198-3", "candidato": "GABRIEL SEBASTIAN TIZNADO ZURITA", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "corrección", "estado": "Terminado", "archivoNombre": ""}, {"id": 26, "auditor": "Javier", "fechaAsignacion": "2026-05-15", "causa": "1560-2025", "rut": "15604235-8", "candidato": "LEONARDO BRUNO CONTRERAS NEIRA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 27, "auditor": "alex", "fechaAsignacion": "2026-05-24", "causa": "1126-2025", "rut": "10025170-1", "candidato": "MARIO ENRIQUE BARRUETO GAJARDO", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-28", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 28, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-05-24", "causa": "1297-2025", "rut": "10135145-9", "candidato": "ITALO MARTINEZ CARVALLO", "eleccion": "CONSEJERO REGIONAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 29, "auditor": "daniela", "fechaAsignacion": "2026-05-24", "causa": "1099-2025", "rut": "10193983-9", "candidato": "MIGUEL ANGEL SALGADO MUÑOZ", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 30, "auditor": "edith", "fechaAsignacion": "2026-05-24", "causa": "1065-2025", "rut": "10435851-9", "candidato": "XIMENA BERNAL GONZALEZ", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 31, "auditor": "waldemar", "fechaAsignacion": "2026-05-24", "causa": "1071-2025", "rut": "10456676-6", "candidato": "ANTONIO VALENTIN GALVEZ POBLETE", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 32, "auditor": "myriam", "fechaAsignacion": "2026-05-24", "causa": "1330-2025", "rut": "10596717-9", "candidato": "MONICA NAVARRO BUSTAMANTE", "eleccion": "CONSEJERO REGIONAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 33, "auditor": "pedro", "fechaAsignacion": "2026-05-24", "causa": "1121-2025", "rut": "13350327-7", "candidato": "MILIPZA GABRIELA FARIAS QUIJADA", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 34, "auditor": "ursula", "fechaAsignacion": "2026-05-24", "causa": "1091-2025", "rut": "13387738-K", "candidato": "YESSICA FLORES CEA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 35, "auditor": "tamara", "fechaAsignacion": "2026-05-24", "causa": "1471-2025", "rut": "13693016-8", "candidato": "MAXIMILIANO ESTEBAN AVILES MARAMBIO", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 36, "auditor": "alejandro", "fechaAsignacion": "2026-05-24", "causa": "1056-2025", "rut": "15943456-7", "candidato": "OSCAR ARMANDO MACIAS BORQUEZ", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 37, "auditor": "gloria", "fechaAsignacion": "2026-05-24", "causa": "1072-2025", "rut": "16020159-2", "candidato": "AYLYNE VICENCIO MORENO", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 38, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-05-24", "causa": "1371-2025", "rut": "16481179-4", "candidato": "ISMAEL ENRIQUE SAN MARTIN AGUILERA", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 39, "auditor": "mauricio", "fechaAsignacion": "2026-05-24", "causa": "1037-2025", "rut": "5949179-2", "candidato": "GASTON FERNANDEZ MORI", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 40, "auditor": "vero", "fechaAsignacion": "2026-05-24", "causa": "1270-2025", "rut": "8901892-7", "candidato": "NIVIA DEL CARMEN RIQUELME GUTIERREZ", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 41, "auditor": "katherine", "fechaAsignacion": "2026-05-24", "causa": "1276-2025", "rut": "9178201-4", "candidato": "JUAN JESUS HERRERA FUENTES", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 42, "auditor": "patricia", "fechaAsignacion": "2026-05-24", "causa": "1277-2025", "rut": "9239412-3", "candidato": "MARCELO PATRICIO VARGAS MARTINEZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 43, "auditor": "Jose Celedon", "fechaAsignacion": "2026-05-24", "causa": "1286-2025", "rut": "9774341-K", "candidato": "JOSE BRAVO BURGOS", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "corrección", "estado": "Terminado", "archivoNombre": ""}, {"id": 44, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1030-2025", "rut": "16246810-3", "candidato": "GLEICY DE LOS ANGELES BERGEN LOYOLA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 45, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-06-15", "causa": "1053-2025", "rut": "15930807-3", "candidato": "FELIPE MUÑOZ HEREDIA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 46, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1077-2025", "rut": "16051085-4", "candidato": "LISETTE ARELLANO SANCHEZ", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 47, "auditor": "kathy", "fechaAsignacion": "2026-06-15", "causa": "1101-2025", "rut": "10202947-K", "candidato": "FERNANDO RODRIGO CONTRERAS BOISIER", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 48, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1142-2025", "rut": "", "candidato": "", "eleccion": "", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "sentencia incongruente", "estado": "Asignado", "archivoNombre": ""}, {"id": 49, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-06-15", "causa": "1149-2025", "rut": "7371986-0", "candidato": "JAVIER HERNANDEZ HERNANDEZ", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 50, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1152-2025", "rut": "11838331-1", "candidato": "ROSARIO DEL CARMEN CARVAJAL ARAYA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 51, "auditor": "kathy", "fechaAsignacion": "2026-06-15", "causa": "1154-2025", "rut": "9619738-1", "candidato": "ROSA ELIANA NABALON SALAZAR", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 52, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1211-2025", "rut": "15312160-5", "candidato": "FELIPE ILLANES DIEZ", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 53, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-06-15", "causa": "1227-2025", "rut": "16256359-9", "candidato": "PRISSILA NATALY FARIAS MORALES", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 54, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1251-2025", "rut": "6720037-3", "candidato": "CARLOS ALBERTO MELLA LATORRE", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 55, "auditor": "kathy", "fechaAsignacion": "2026-06-15", "causa": "1258-2025", "rut": "7313423-4", "candidato": "CARLOS FLORES GONZALEZ", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 56, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1281-2025", "rut": "9379595-4", "candidato": "ELIANA ELENA AZOCAR SILVA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": false, "fechaEnviado": "2025-01-01", "observacion": "enviado anteriormente", "estado": "Terminado", "archivoNombre": ""}, {"id": 57, "auditor": "Julissa Lazo", "fechaAsignacion": "2026-06-15", "causa": "1309-2025", "rut": "10190076-2", "candidato": "IVONNE RIVAS ORTIZ", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 58, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1313-2025", "rut": "10238592-6", "candidato": "FERMIN ALEJANDRO CARREÑO CARREÑO", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 59, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1320-2025", "rut": "10457817-9", "candidato": "JUAN MUÑOZ QUEZADA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-20", "observacion": "vero", "estado": "Terminado", "archivoNombre": ""}, {"id": 60, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1335-2025", "rut": "10603731-0", "candidato": "OMAR NORAMBUENA RIVERA", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "sentencia incongruente", "estado": "Asignado", "archivoNombre": ""}, {"id": 61, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1347-2025", "rut": "10909749-7", "candidato": "CARLOS FERNANDO ACEVEDO CIFUENTES", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-05-22", "observacion": "enviado anteriormente", "estado": "Terminado", "archivoNombre": ""}, {"id": 62, "auditor": "Ximena Valdebenito", "fechaAsignacion": "2026-06-15", "causa": "1355-2025", "rut": "11278970-7", "candidato": "CRISTINA IVONNE MARCHANT SALINAS", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 63, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1356-2025", "rut": "11186445-4", "candidato": "WILDO RICHARD FARIAS GONZALEZ", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-05-19", "observacion": "enviado anteriormente", "estado": "Terminado", "archivoNombre": ""}, {"id": 64, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1363-2025", "rut": "11469922-5", "candidato": "ANALIZ XIMENA VEGA CERDA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 65, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1372-2025", "rut": "11744268-3", "candidato": "CAROLA GONZALEZ INOSTROZA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 66, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1379-2025", "rut": "11932476-9", "candidato": "DINKA SOLANGE LOPEZ DURAN", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-19", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 67, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1386-2025", "rut": "11993445-1", "candidato": "JUAN CARLOS ZURITA MEDINA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 68, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "1405-2025", "rut": "12378443-K", "candidato": "ALDO GUSTAVO SANDOVAL GARRIDO", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 69, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1413-2025", "rut": "12640104-3", "candidato": "CLAUDIA ACEVEDO CORNEJO", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 70, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1444-2025", "rut": "13209722-4", "candidato": "JORGE LUIS URZUA GARCIA", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 71, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1457-2025", "rut": "17129616-1", "candidato": "DANIEL MENA GUAJARDO", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-22", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 72, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1458-2025", "rut": "13429418-3", "candidato": "KATYHUSKA POLONSKY ROBLERO", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-22", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 73, "auditor": "Ximena Valdebenito", "fechaAsignacion": "2026-06-15", "causa": "1507-2025", "rut": "16279870-7", "candidato": "CYNTHIA ACUÑA SILVA", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 74, "auditor": "Ximena Valdebenito", "fechaAsignacion": "2026-06-15", "causa": "1554-2025", "rut": "9494187-3", "candidato": "JORGE ALBERTO SUAREZ SUAREZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 75, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "1561-2025", "rut": "17248502-2", "candidato": "CAMILA TORRES UMANZOR", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-22", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 76, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "1580-2025", "rut": "17647509-9", "candidato": "ANGELO MAURICIO MILLAMAN LOPEZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 77, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "357-2025", "rut": "17872160-7", "candidato": "FERNANDA ISABEL GONZALEZ VIVANCO", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-16", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 78, "auditor": "realizado anteriormente", "fechaAsignacion": "2026-06-15", "causa": "425-2025", "rut": "", "candidato": "", "eleccion": "", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "2025-01-01", "observacion": "enviado anteriormente", "estado": "Asignado", "archivoNombre": ""}, {"id": 79, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-15", "causa": "499-2025", "rut": "13389115-3", "candidato": "ALEJANDRA BURGOS BIZAMA", "eleccion": "ALCALDE", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "sentencia ordena una nueva revisión de la cuenta, se solicita a administracion electoral documentacion para realizar los informes", "estado": "Asignado", "archivoNombre": ""}, {"id": 80, "auditor": "kathy", "fechaAsignacion": "2026-06-15", "causa": "524-2025", "rut": "7077432-1", "candidato": "SADI MELO MOYA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 81, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "750-2025", "rut": "12522490-3", "candidato": "ERNA MARJORIE MALDONADO CASANOVA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": false, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-18", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 82, "auditor": "Julissa Lazo", "fechaAsignacion": "2026-06-15", "causa": "797-2025", "rut": "12271034-3", "candidato": "CAROLINA ANDREA PRIETO NUÑEZ", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 83, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "804-2025", "rut": "17741002-0", "candidato": "GONZALO IGNACIO AGUAYO GAJARDO", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 84, "auditor": "Miguel", "fechaAsignacion": "2026-06-15", "causa": "828-2025", "rut": "17339423-3", "candidato": "PRISCILA ESTEFANY REYES TRONCOSO", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 85, "auditor": "Miguel", "fechaAsignacion": "2026-06-15", "causa": "857-2025", "rut": "7263887-5", "candidato": "PASCUAL SEGUNDO AREVALOS MARTINEZ", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Asignado", "archivoNombre": ""}, {"id": 86, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "863-2025", "rut": "17213474-2", "candidato": "GABRIEL FRANCISCO ACUÑA VASQUEZ", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 87, "auditor": "vero", "fechaAsignacion": "2026-06-15", "causa": "900-2025", "rut": "13831881-8", "candidato": "SANDRA DANIELA BELTRAMI MONTERO", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-22", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 88, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "966-2025", "rut": "6857246-0", "candidato": "NELLY RAQUEL SANTANDER MARIN", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 89, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-15", "causa": "998-2025", "rut": "10709896-8", "candidato": "JASMINA DEL CARMEN VALENZUELA REYES", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-17", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 90, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-22", "causa": "1190-2025", "rut": "9457718-7", "candidato": "MARIA ALEJANDRA OLIVARES PONCE", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-23", "observacion": "corrección", "estado": "Terminado", "archivoNombre": ""}, {"id": 91, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-23", "causa": "1135-2025", "rut": "13325647-4", "candidato": "JESSICA RUTH BARRIENTOS BARRIENTOS", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 92, "auditor": "vero", "fechaAsignacion": "2026-06-23", "causa": "989-2025", "rut": "10606628-0", "candidato": "MAURICIO HENRIQUEZ SANDOVAL", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-06-25", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 93, "auditor": "Jose Celedon", "fechaAsignacion": "2026-02-04", "causa": "370-2025", "rut": "5776007-9", "candidato": "JORGE OSVALDO MUÑOZ OYARCE", "eleccion": "GOBERNADOR REGIONAL", "resultado": "Acoge", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-02-04", "observacion": "enviado antiguo", "estado": "Terminado", "archivoNombre": ""}, {"id": 94, "auditor": "Jose Celedon", "fechaAsignacion": "2026-02-04", "causa": "393-2025", "rut": "12437024-8", "candidato": "PAOLA AMANDA DEBIA GONZALEZ", "eleccion": "GOBERNADOR REGIONAL", "resultado": "Acoge", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-02-04", "observacion": "enviado antiguo", "estado": "Terminado", "archivoNombre": ""}, {"id": 95, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-26", "causa": "943-2025", "rut": "11224708-4", "candidato": "FABIAN EDMUNDO RODRIGUEZ RIVERA", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-06-26", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 96, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-30", "causa": "1410-2025", "rut": "12479478-1", "candidato": "CLAUDIA ANDREA ATENAS SOZA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-03", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 97, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-06-30", "causa": "1368-2025", "rut": "11736760-6", "candidato": "KARIN LUCK URBAN", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-07-03", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 98, "auditor": "Julissa Lazo", "fechaAsignacion": "2026-06-30", "causa": "420-2025", "rut": "15248646-4", "candidato": "LUCIANO RIVAS STEPKE", "eleccion": "GOBERNADOR REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-07-03", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 99, "auditor": "vero", "fechaAsignacion": "2026-06-30", "causa": "374-2025", "rut": "9315641-2", "candidato": "REBECA DEL ROSARIO COFRE CALDERON", "eleccion": "GOBERNADOR REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-07-03", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 100, "auditor": "Jose Celedon", "fechaAsignacion": "2026-06-30", "causa": "1463-2025", "rut": "10674551-K", "candidato": "RODRIGO MAURICIO AGUILERA BOIN", "eleccion": "CONCEJAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-03", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 101, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1613-2025", "rut": "20300175-4", "candidato": "LILITH VICTORIA ATENEA TRUJILLO ESPINOZA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 102, "auditor": "vero", "fechaAsignacion": "2026-07-03", "causa": "1479-2025", "rut": "13972541-7", "candidato": "JORGE MORALES SANHUEZA", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 103, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1587-2025", "rut": "17933717-7", "candidato": "ANDREA NICOLE ACUÑA MUÑOZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 104, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1583-2025", "rut": "17826151-7", "candidato": "CRISTOBAL BRAVO VALENZUELA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 105, "auditor": "vero", "fechaAsignacion": "2026-07-03", "causa": "1542-2025", "rut": "16349651-8", "candidato": "LUIS DOMINGO MILLA RAMIREZ", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 106, "auditor": "vero", "fechaAsignacion": "2026-07-03", "causa": "1557-2025", "rut": "17275627-1", "candidato": "JOSE ERNESTO MACHUCA TORRES", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 107, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1521-2025", "rut": "16724912-4", "candidato": "SEBASTIAN NICOLAS GODOY LEAL", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 108, "auditor": "vero", "fechaAsignacion": "2026-07-03", "causa": "1687-2025", "rut": "13223572-4", "candidato": "ALEJANDRO CAMPUSANO MASSAD", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 109, "auditor": "vero", "fechaAsignacion": "2026-07-03", "causa": "1598-2025", "rut": "18900254-8", "candidato": "BAIRON MANUEL ARANCIBIA ROJAS", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 110, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1559-2025", "rut": "8280140-5", "candidato": "ALEJANDRO FIDEL MORALES IMAÑA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 111, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "355-2025", "rut": "11846601-2", "candidato": "MAURICIO ALEJANDRO ROSEN FUENTEALBA", "eleccion": "CONSEJERO REGIONAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 112, "auditor": "Julissa Lazo", "fechaAsignacion": "2026-07-03", "causa": "1680-2025", "rut": "", "candidato": "", "eleccion": "", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Asignado", "archivoNombre": ""}, {"id": 113, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1140-2025", "rut": "9852172-0", "candidato": "CARLOS AUGUSTO CASTRO VIDAL", "eleccion": "CONCEJAL", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 114, "auditor": "Camila Chaparro", "fechaAsignacion": "2026-07-03", "causa": "1412-2025", "rut": "12607560-K", "candidato": "ELIECER DANIEL CHAMORRO VARGAS", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Asignado", "archivoNombre": ""}, {"id": 115, "auditor": "miguel", "fechaAsignacion": "2026-07-03", "causa": "1389-2025", "rut": "", "candidato": "", "eleccion": "", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Asignado", "archivoNombre": ""}, {"id": 116, "auditor": "miguel", "fechaAsignacion": "2026-07-03", "causa": "1288-2025", "rut": "", "candidato": "", "eleccion": "", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Asignado", "archivoNombre": ""}, {"id": 117, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-07-03", "causa": "1346-2025", "rut": "10968897-5", "candidato": "CAROLINA CORTI BADIA", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 118, "auditor": "vero", "fechaAsignacion": "2026-07-03", "causa": "1500-2025", "rut": "15630966-4", "candidato": "OSVALDO JORQUERA PADILLA", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Asignado", "archivoNombre": ""}, {"id": 119, "auditor": "Jose Celedon", "fechaAsignacion": "2026-07-03", "causa": "1563-2025", "rut": "15032285-5", "candidato": "JONATHAN ALFREDO CARMONA DIAZ", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 120, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-07-03", "causa": "1409-2025", "rut": "12599094-0", "candidato": "VICTOR DONOSO OYANEDEL", "eleccion": "ALCALDE", "resultado": "Acoge Parcial", "modificaInforme": true, "modificaReembolso": false, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 121, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-07-03", "causa": "1591-2025", "rut": "18464777-k", "candidato": "DIEGO RAMIREZ DONOSO", "eleccion": "ALCALDE", "resultado": "Acoge", "modificaInforme": true, "modificaReembolso": true, "enviadoJefatura": true, "fechaEnviado": "2026-07-06", "observacion": "", "estado": "Terminado", "archivoNombre": ""}, {"id": 122, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-07-03", "causa": "431-2025", "rut": "11275475-K", "candidato": "ANGELICA DEL CARMEN FLORES ROMERO", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "NO Presentada", "estado": "Asignado", "archivoNombre": ""}, {"id": 123, "auditor": "Felipe Sarabia", "fechaAsignacion": "2026-07-03", "causa": "443-2025", "rut": "14383264-3", "candidato": "JORGE ARTURO GUTIERREZ GATICA", "eleccion": "CONCEJAL", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "NO Presentada", "estado": "Asignado", "archivoNombre": ""}, {"id": 124, "auditor": "Ximena Valdebenito", "fechaAsignacion": "2026-07-06", "causa": "1284-2025", "rut": "", "candidato": "", "eleccion": "", "resultado": "Pendiente", "modificaInforme": false, "modificaReembolso": false, "enviadoJefatura": false, "fechaEnviado": "", "observacion": "", "estado": "Asignado", "archivoNombre": ""}];
+  // Lee el mismo archivo que actualiza el scraper (seen_jobs.json)
+  const DATA_URL = "./seen_jobs.json";
 
-/* ===================== Persistencia ===================== */
-const LS_KEY = 'tricel_records_v1';
-const DB_NAME = 'tricel_files_v1';
-let db = null;
+  let todas = [];
 
-function openDB(){
-  return new Promise((resolve,reject)=>{
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = ()=>{ req.result.createObjectStore('files'); };
-    req.onsuccess = ()=> resolve(req.result);
-    req.onerror = ()=> reject(req.error);
-  });
-}
-async function saveFile(id, fileObj){
-  const tx = db.transaction('files','readwrite');
-  tx.objectStore('files').put(fileObj, String(id));
-  return new Promise((res,rej)=>{ tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); });
-}
-async function getFile(id){
-  return new Promise((res,rej)=>{
-    const tx = db.transaction('files','readonly');
-    const r = tx.objectStore('files').get(String(id));
-    r.onsuccess = ()=> res(r.result || null);
-    r.onerror = ()=> rej(r.error);
-  });
-}
-async function deleteFile(id){
-  const tx = db.transaction('files','readwrite');
-  tx.objectStore('files').delete(String(id));
-  return new Promise((res)=>{ tx.oncomplete=()=>res(); });
-}
+  function render(items) {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
 
-function loadRecords(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){ console.error('Error leyendo almacenamiento local', e); }
-  return JSON.parse(JSON.stringify(SEED));
-}
-function persist(){
-  try{ localStorage.setItem(LS_KEY, JSON.stringify(records)); }
-  catch(e){ console.error('No se pudo guardar', e); alert('No se pudo guardar en el navegador (almacenamiento lleno o bloqueado).'); }
-}
-
-let records = loadRecords();
-let currentView = 'kanban';
-let editingId = null;
-let pendingFile = null;   // {name, type, data} para el registro en edición
-let pendingFileRemoved = false;
-
-/* ===================== Utilidades ===================== */
-const $ = sel => document.querySelector(sel);
-const $$ = sel => Array.from(document.querySelectorAll(sel));
-const fmtDate = d => d ? new Date(d+'T00:00:00').toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'}) : '—';
-const nextId = () => records.reduce((m,r)=>Math.max(m,r.id),0)+1;
-
-function resultadoClass(r){ return r==='Acoge Parcial' ? 'AcogeParcial' : (r||'Pendiente').replace(' ','');}
-function estadoClass(e){ return (e||'Asignado').replace(' ',''); }
-
-/* ===================== Filtros ===================== */
-function getFilters(){
-  return {
-    q: $('#fSearch').value.trim().toLowerCase(),
-    auditor: $('#fAuditor').value,
-    estado: $('#fEstado').value,
-    eleccion: $('#fEleccion').value,
-  };
-}
-function applyFilters(list){
-  const f = getFilters();
-  return list.filter(r=>{
-    if(f.auditor && r.auditor !== f.auditor) return false;
-    if(f.estado && r.estado !== f.estado) return false;
-    if(f.eleccion && r.eleccion !== f.eleccion) return false;
-    if(f.q){
-      const hay = [r.causa,r.candidato,r.rut,r.observacion,r.auditor].join(' ').toLowerCase();
-      if(!hay.includes(f.q)) return false;
+    if (items.length === 0) {
+      lista.innerHTML = '<div class="empty">No hay ofertas para mostrar.</div>';
+      return;
     }
-    return true;
-  });
-}
 
-const AUDITORES_EQUIPO = ['Felipe Sarabia','Julissa Lazo','Camila Chaparro','Jose Celedon','Ximena Valdebenito'];
-
-function refreshFilterOptions(){
-  const auditores = AUDITORES_EQUIPO.slice().sort((a,b)=>a.localeCompare(b,'es'));
-  const elecciones = Array.from(new Set(records.map(r=>r.eleccion).filter(Boolean))).sort();
-  const selA = $('#fAuditor'), selE = $('#fEleccion'), dl = $('#auditorList');
-  const curA = selA.value, curE = selE.value;
-  selA.innerHTML = '<option value="">Todos los auditores</option>' + auditores.map(a=>`<option value="${esc(a)}">${esc(a)}</option>`).join('');
-  selE.innerHTML = '<option value="">Toda elección</option>' + elecciones.map(a=>`<option value="${esc(a)}">${esc(a)}</option>`).join('');
-  dl.innerHTML = auditores.map(a=>`<option value="${esc(a)}">`).join('');
-  selA.value = curA; selE.value = curE;
-}
-function esc(s){ return (s||'').toString().replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* ===================== Render estadísticas ===================== */
-function renderStats(){
-  $('#statTotal').textContent = records.length;
-  $('#stAsignado').textContent = records.filter(r=>r.estado==='Asignado').length;
-  $('#stProceso').textContent = records.filter(r=>r.estado==='En Proceso').length;
-  $('#stTerminado').textContent = records.filter(r=>r.estado==='Terminado').length;
-  $('#stEnviados').textContent = records.filter(r=>r.enviadoJefatura).length;
-  $('#stArchivos').textContent = records.filter(r=>r.archivoNombre).length;
-}
-
-/* ===================== Render Kanban ===================== */
-const ESTADOS = ['Asignado','En Proceso','Terminado'];
-function renderBoard(){
-  const board = $('#board');
-  const filtered = applyFilters(records);
-  board.innerHTML = ESTADOS.map(estado=>{
-    const items = filtered.filter(r=>r.estado===estado);
-    const cards = items.map(r=>cardHtml(r)).join('') || '<div class="empty-col">Sin expedientes</div>';
-    return `
-    <div class="col" data-estado="${estado}">
-      <div class="col-head">${estado==='En Proceso'?'En proceso':estado}<span class="count">${items.length}</span></div>
-      <div class="col-body" data-estado="${estado}">${cards}</div>
-    </div>`;
-  }).join('');
-
-  $$('.card').forEach(c=>{
-    c.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', c.dataset.id); });
-    c.addEventListener('click', ()=> openModal(Number(c.dataset.id)));
-  });
-  $$('.col-body').forEach(col=>{
-    col.addEventListener('dragover', e=>{ e.preventDefault(); col.classList.add('dragover'); });
-    col.addEventListener('dragleave', ()=> col.classList.remove('dragover'));
-    col.addEventListener('drop', e=>{
-      e.preventDefault(); col.classList.remove('dragover');
-      const id = Number(e.dataTransfer.getData('text/plain'));
-      const rec = records.find(r=>r.id===id);
-      if(rec){ rec.estado = col.dataset.estado; persist(); renderAll(); }
+    items.forEach(([id, data]) => {
+      const div = document.createElement("div");
+      div.className = "job";
+      div.innerHTML = `
+        <a href="${data.link}" target="_blank" rel="noopener">${data.title}</a>
+        <div class="id">ID ${id}</div>
+      `;
+      lista.appendChild(div);
     });
-  });
-}
-function cardHtml(r){
-  if(r.estado === 'Asignado'){
-    return `<div class="card" draggable="true" data-id="${r.id}">
-      <div class="causa">Causa ${esc(r.causa||'—')}</div>
-      <div class="meta"><span>👤 ${esc(r.auditor||'Sin asignar')}</span></div>
-    </div>`;
   }
-  if(r.estado === 'Terminado'){
-    return `<div class="card" draggable="true" data-id="${r.id}">
-      <div class="causa">Causa ${esc(r.causa||'—')}</div>
-    </div>`;
-  }
-  return `<div class="card" draggable="true" data-id="${r.id}">
-    <div class="stamp ${resultadoClass(r.resultado)}">${esc(r.resultado||'Pendiente')}</div>
-    <div class="causa">Causa ${esc(r.causa||'—')}</div>
-    <div class="cand">${esc(r.candidato||'Sin candidato registrado')}</div>
-    <div class="meta">
-      <span>👤 ${esc(r.auditor||'Sin asignar')}</span>
-      <span>${esc(r.eleccion||'')}</span>
-      <span>📅 ${fmtDate(r.fechaAsignacion)}</span>
-    </div>
-    ${r.archivoNombre ? `<div class="file-chip">📎 ${esc(r.archivoNombre)}</div>` : ''}
-  </div>`;
-}
 
-/* ===================== Render Tabla ===================== */
-let sortKey = 'causa', sortDir = 1;
-function renderTable(){
-  const filtered = applyFilters(records).slice().sort((a,b)=>{
-    const va = (a[sortKey]||'').toString(), vb = (b[sortKey]||'').toString();
-    return va.localeCompare(vb, 'es', {numeric:true}) * sortDir;
+  fetch(DATA_URL, { cache: "no-store" })
+    .then((r) => r.json())
+    .then((data) => {
+      todas = Object.entries(data).reverse(); // más recientes primero
+      document.getElementById("status").textContent =
+        `${todas.length} oferta(s) registrada(s)`;
+      render(todas);
+    })
+    .catch(() => {
+      document.getElementById("status").textContent =
+        "No se pudo cargar seen_jobs.json todavía (puede que el Action no haya corrido aún).";
+    });
+
+  document.getElementById("filtro").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    const filtradas = todas.filter(([id, data]) =>
+      data.title.toLowerCase().includes(q)
+    );
+    render(filtradas);
   });
-  $('#tbody').innerHTML = filtered.map(r=>`
-    <tr>
-      <td class="mono">${esc(r.causa||'—')}</td>
-      <td>${esc(r.candidato||'—')}</td>
-      <td>${esc(r.eleccion||'—')}</td>
-      <td>${esc(r.auditor||'—')}</td>
-      <td>${fmtDate(r.fechaAsignacion)}</td>
-      <td><span class="badge ${estadoClass(r.estado)}">${r.estado==='En Proceso'?'En proceso':r.estado}</span></td>
-      <td><span class="stamp ${resultadoClass(r.resultado)}" style="position:static;">${esc(r.resultado||'Pendiente')}</span></td>
-      <td>${r.archivoNombre ? `<button class="rowbtn" data-dl="${r.id}">📎 Descargar</button>` : '—'}</td>
-      <td><button class="rowbtn" data-edit="${r.id}">Editar</button></td>
-    </tr>
-  `).join('');
-  $('#noResults').style.display = filtered.length ? 'none' : 'block';
-  $$('[data-edit]').forEach(b=> b.addEventListener('click', ()=> openModal(Number(b.dataset.edit))));
-  $$('[data-dl]').forEach(b=> b.addEventListener('click', ()=> downloadFile(Number(b.dataset.dl))));
-}
-
-async function downloadFile(id){
-  const f = await getFile(id);
-  if(!f){ alert('No se encontró el archivo guardado localmente para este expediente.'); return; }
-  const blob = new Blob([f.data], {type:f.type||'application/octet-stream'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = f.name || 'informe';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 4000);
-}
-
-/* ===================== Render orquestador ===================== */
-function renderAll(){
-  refreshFilterOptions();
-  renderStats();
-  if(currentView==='kanban') renderBoard(); else renderTable();
-}
-
-/* ===================== Modal ===================== */
-function openModal(id){
-  editingId = id;
-  pendingFile = null; pendingFileRemoved = false;
-  const rec = id ? records.find(r=>r.id===id) : null;
-  $('#modalTitle').textContent = rec ? `Expediente · Causa ${rec.causa||''}` : 'Nuevo expediente';
-  $('#fldCausa').value = rec?.causa || '';
-  $('#fldAuditor').value = rec?.auditor || '';
-  $('#fldFecha').value = rec?.fechaAsignacion || new Date().toISOString().slice(0,10);
-  $('#fldEstado').value = rec?.estado || 'Asignado';
-  $('#fldRut').value = rec?.rut || '';
-  $('#fldCandidato').value = rec?.candidato || '';
-  $('#fldEleccion').value = rec?.eleccion || '';
-  $('#fldResultado').value = rec?.resultado || 'Pendiente';
-  $('#fldModInforme').checked = !!rec?.modificaInforme;
-  $('#fldModReembolso').checked = !!rec?.modificaReembolso;
-  $('#fldEnviado').checked = !!rec?.enviadoJefatura;
-  $('#fldFechaEnviado').value = rec?.fechaEnviado || '';
-  $('#fldObs').value = rec?.observacion || '';
-  $('#fldArchivo').value = '';
-  $('#curArchivo').textContent = rec?.archivoNombre ? `Actual: ${rec.archivoNombre}` : 'Sin archivo cargado';
-  $('#btnQuitarArchivo').style.display = rec?.archivoNombre ? 'inline-block' : 'none';
-  $('#btnDelete').style.display = rec ? 'inline-block' : 'none';
-  $('#overlay').classList.add('show');
-}
-function closeModal(){ $('#overlay').classList.remove('show'); editingId=null; }
-
-$('#fldArchivo').addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  if(file.size > 20*1024*1024){ alert('El archivo supera 20MB; elige uno más liviano para el almacenamiento local.'); e.target.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = ()=>{ pendingFile = {name:file.name, type:file.type, data: reader.result}; pendingFileRemoved=false; $('#curArchivo').textContent = `Nuevo: ${file.name}`; };
-  reader.readAsArrayBuffer(file);
-});
-$('#btnQuitarArchivo').addEventListener('click', ()=>{
-  pendingFileRemoved = true; pendingFile = null;
-  $('#curArchivo').textContent = 'Se eliminará al guardar';
-  $('#fldArchivo').value='';
-});
-
-async function saveModal(){
-  const causa = $('#fldCausa').value.trim();
-  if(!causa){ alert('Ingresa el N° de causa.'); return; }
-  let rec = editingId ? records.find(r=>r.id===editingId) : null;
-  const isNew = !rec;
-  if(isNew){ rec = { id: nextId() }; }
-  Object.assign(rec, {
-    causa,
-    auditor: $('#fldAuditor').value.trim(),
-    fechaAsignacion: $('#fldFecha').value,
-    estado: $('#fldEstado').value,
-    rut: $('#fldRut').value.trim(),
-    candidato: $('#fldCandidato').value.trim(),
-    eleccion: $('#fldEleccion').value,
-    resultado: $('#fldResultado').value,
-    modificaInforme: $('#fldModInforme').checked,
-    modificaReembolso: $('#fldModReembolso').checked,
-    enviadoJefatura: $('#fldEnviado').checked,
-    fechaEnviado: $('#fldFechaEnviado').value,
-    observacion: $('#fldObs').value.trim(),
-  });
-  if(isNew) records.push(rec);
-
-  if(pendingFile){
-    await saveFile(rec.id, pendingFile);
-    rec.archivoNombre = pendingFile.name;
-  } else if(pendingFileRemoved){
-    await deleteFile(rec.id);
-    rec.archivoNombre = '';
-  }
-  persist();
-  closeModal();
-  renderAll();
-}
-
-async function deleteRecord(){
-  if(!editingId) return;
-  if(!confirm('¿Eliminar este expediente? Esta acción no se puede deshacer.')) return;
-  records = records.filter(r=>r.id!==editingId);
-  await deleteFile(editingId);
-  persist();
-  closeModal();
-  renderAll();
-}
-
-/* ===================== Export CSV ===================== */
-function exportCsv(){
-  const cols = ['causa','auditor','fechaAsignacion','rut','candidato','eleccion','estado','resultado','modificaInforme','modificaReembolso','enviadoJefatura','fechaEnviado','observacion','archivoNombre'];
-  const header = ['Causa','Auditor','Fecha asignación','RUT','Candidato','Elección','Estado','Resultado','Modifica informe','Modifica reembolso','Enviado a jefatura','Fecha enviado','Observación','Archivo'];
-  const rows = applyFilters(records).map(r=> cols.map(c=>{
-    let v = r[c];
-    if(typeof v === 'boolean') v = v ? 'Sí' : 'No';
-    v = (v ?? '').toString().replace(/"/g,'""');
-    return `"${v}"`;
-  }).join(','));
-  const csv = [header.join(','), ...rows].join('\n');
-  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='control_recursos_tricel.csv';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),4000);
-}
-
-/* ===================== Eventos globales ===================== */
-$('#btnNew').addEventListener('click', ()=> openModal(null));
-$('#modalClose').addEventListener('click', closeModal);
-$('#btnCancel').addEventListener('click', closeModal);
-$('#btnSave').addEventListener('click', saveModal);
-$('#btnDelete').addEventListener('click', deleteRecord);
-$('#overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
-$('#btnExport').addEventListener('click', exportCsv);
-
-$('#btnKanban').addEventListener('click', ()=>{
-  currentView='kanban'; $('#btnKanban').classList.add('active'); $('#btnTabla').classList.remove('active');
-  $('#kanbanView').style.display='block'; $('#tablaView').style.display='none'; renderAll();
-});
-$('#btnTabla').addEventListener('click', ()=>{
-  currentView='tabla'; $('#btnTabla').classList.add('active'); $('#btnKanban').classList.remove('active');
-  $('#kanbanView').style.display='none'; $('#tablaView').style.display='block'; renderAll();
-});
-
-['#fSearch','#fAuditor','#fEstado','#fEleccion'].forEach(sel=>{
-  $(sel).addEventListener('input', renderAll);
-  $(sel).addEventListener('change', renderAll);
-});
-
-$$('thead th[data-k]').forEach(th=>{
-  th.addEventListener('click', ()=>{
-    const k = th.dataset.k;
-    if(sortKey===k) sortDir *= -1; else { sortKey=k; sortDir=1; }
-    renderTable();
-  });
-});
-
-/* ===================== Init ===================== */
-(async function init(){
-  try{ db = await openDB(); }
-  catch(e){ console.error('IndexedDB no disponible', e); }
-  renderAll();
-})();
 </script>
 </body>
 </html>
