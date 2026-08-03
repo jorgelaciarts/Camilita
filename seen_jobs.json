@@ -318,5 +318,13 @@
     "city": "Angol",
     "closes": "07/08/2026 23:59:00",
     "link": "https://www.empleospublicos.cl/pub/convocatorias/convpostularavisoTrabajo.aspx?i=140199&c=0&j=0&tipo=convpostularavisoTrabajo"
+  },
+  "http://www.sii.cl/sobre_el_sii/en_postulacion.html": {
+    "title": "Jefatura de Departamento Jurídico - Grado 7 - Dirección Regional Valparaíso",
+    "institution": "Servicio de Impuestos Internos / No Aplica",
+    "region": "Región de Valparaíso",
+    "city": "Valparaíso",
+    "closes": "14/08/2026 23:59:00",
+    "link": "http://www.sii.cl/sobre_el_sii/en_postulacion.html"
   }
 }
